@@ -3,6 +3,7 @@ package com.alexandrucorut.kotlin_listview_demo
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -24,17 +25,27 @@ class MainActivity : AppCompatActivity() {
     private class MyCustomAdapter(context: Context) : BaseAdapter() {
 
         private val mContext: Context
+        private val names = arrayListOf<String>(
+                "Donald Trump", "Steve Jobs", "Tim Cook", "Mark Zuckerberg", "Barrack Obama")
 
         init {
             mContext = context
         }
 
         override fun getView(position: Int, converView: View?, viewGroup: ViewGroup?): View {
-            val textView = TextView(mContext)
 
-            textView.text = "Here is my ROW for my ListView"
+            val layoutInflator = LayoutInflater.from(mContext)
 
-            return textView
+            val rowMain = layoutInflator.inflate(R.layout.main_row, viewGroup, false)
+
+            val nameTextView = rowMain.findViewById<TextView>(R.id.name_textView)
+            val positionTextView = rowMain.findViewById<TextView>(R.id.position_textView)
+
+            nameTextView.text = names.get(position)
+            positionTextView.text = "Row number: $position"
+
+
+            return rowMain
         }
 
         override fun getItem(position: Int): Any {
@@ -46,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getCount(): Int {
-            return 5
+            return names.size
         }
 
     }
